@@ -19,11 +19,44 @@ const SavedBooks = () => {
     variables: { savedBooks: bookData}
   });
 
-  const book = data?.book || {};
+  // const book = data?.book || {};
 
   if (loading) {
     return <div>Loading...</div>;
   }
+  return (
+    <>
+      <Jumbotron fluid className='text-light bg-dark'>
+        <Container>
+          <h1>Viewing saved books!</h1>
+        </Container>
+      </Jumbotron>
+      <Container>
+        <h2>
+          {userData.savedBooks.length
+            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+            : 'You have no saved books!'}
+        </h2>
+        <CardColumns>
+          {userData.savedBooks.map((book) => {
+            return (
+              <Card key={bookData.bookId} border='dark'>
+                {bookData.image ? <Card.Img src={bookData.image} alt={`The cover for ${bookData.title}`} variant='top' /> : null}
+                <Card.Body>
+                  <Card.Title>{bookData.title}</Card.Title>
+                  <p className='small'>Authors: {bookData.authors}</p>
+                  <Card.Text>{bookData.description}</Card.Text>
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(bookData.bookId)}>
+                    Delete this Book!
+                  </Button>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </CardColumns>
+      </Container>
+    </>
+  );
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
