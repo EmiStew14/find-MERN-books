@@ -19,7 +19,8 @@ const SavedBooks = () => {
     variables: { savedBooks: bookData}
   });
 
-  // const book = data?.book || {};
+  const book = data?.me.savedBooks || {};
+  console.log(book);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -33,20 +34,21 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {book.length
+            ? `Viewing ${book.length} saved ${book.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {book.map((book) => {
+            console.log(book);
             return (
-              <Card key={bookData.bookId} border='dark'>
-                {bookData.image ? <Card.Img src={bookData.image} alt={`The cover for ${bookData.title}`} variant='top' /> : null}
+              <Card key={book.bookId} border='dark'>
+                {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
-                  <Card.Title>{bookData.title}</Card.Title>
-                  <p className='small'>Authors: {bookData.authors}</p>
-                  <Card.Text>{bookData.description}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(bookData.bookId)}>
+                  <Card.Title>{book.title}</Card.Title>
+                  <p className='small'>Authors: {book.authors}</p>
+                  <Card.Text>{book.description}</Card.Text>
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
                 </Card.Body>
